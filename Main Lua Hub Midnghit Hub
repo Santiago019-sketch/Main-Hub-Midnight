@@ -132,6 +132,11 @@ end)
 
 -- Main Script Loader
 function loadMainScript()
+    if game.CoreGui:FindFirstChild("MidnightHubKeySystem") then
+        warn("Already loaded main script.")
+        return
+    end
+
     local placeId = game.PlaceId
     local scripts = {
         [9285238704] = "https://raw.githubusercontent.com/Santiago019-sketch/Race-Clicker-Midnight/refs/heads/main/Race%20clicker%20Midnight%20Hub",
