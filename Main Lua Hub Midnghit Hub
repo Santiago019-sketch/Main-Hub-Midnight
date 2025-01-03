@@ -1,0 +1,52 @@
+-- Key System UI (as provided in your code)
+-- (Already implemented in your provided script)
+
+-- Hub Logic
+local gameScripts = {
+    [9285238704] = "https://raw.githubusercontent.com/Santiago019-sketch/Race-Clicker-Midnight/refs/heads/main/Race%20clicker%20Midnight%20Hub",
+    [5490351219] = "https://raw.githubusercontent.com/Santiago019-sketch/Clicker-Madneess-Midnight-Hub/refs/heads/main/Clicker%20Madness",
+    [16784977282] = "https://raw.githubusercontent.com/Santiago019-sketch/Super-Sayian-Simulator-2-midnight/refs/heads/main/Midnight%20super%20sayian%20sim%202",
+    [16572004551] = "https://raw.githubusercontent.com/Santiago019-sketch/MidnightV5/refs/heads/main/Main.lua",
+    [3623096087] = "https://raw.githubusercontent.com/Santiago019-sketch/Midnight/refs/heads/main/Muscle%20Legends%20%7C%20Midnigt%20Hub",
+    [3101667897] = "https://raw.githubusercontent.com/Santiago019-sketch/Legend-Of-Speed/refs/heads/main/Midnight%20Hub",
+    [6677985923] = "https://raw.githubusercontent.com/Santiago019-sketch/Bloxfruitscript/refs/heads/main/Millionare%20Empire%20Tycoon",
+    [574407221] = "https://raw.githubusercontent.com/Santiago019-sketch/Super-Hero-Tycoon/refs/heads/main/Main.lua",
+    [10201206782] = "https://raw.githubusercontent.com/Santiago019-sketch/Sonic.exe/refs/heads/main/Midnight%20Hub%20Raise%20Sonic.exe"
+}
+
+-- Function to load game-specific scripts
+local function loadGameScript(placeId)
+    local scriptUrl = gameScripts[placeId]
+    if scriptUrl then
+        loadstring(game:HttpGet(scriptUrl))()
+    else
+        warn("No script available for this game (PlaceId: " .. placeId .. ")")
+    end
+end
+
+-- Key validation
+local function validateKeyAndLoad()
+    -- Replace this logic with your existing key system (as shown in your provided code)
+    local key = KeyInput.Text
+    local isValidKey = false
+
+    for _, validKey in ipairs(ValidKeys) do
+        if key == validKey then
+            isValidKey = true
+            break
+        end
+    end
+
+    if isValidKey then
+        Status.Text = "Correct Key! Loading script..."
+        Status.TextColor3 = Color3.fromRGB(0, 255, 0)
+        wait(1)
+        ScreenGui:Destroy() -- Remove key UI
+        loadGameScript(game.PlaceId) -- Load the script for the current game
+    else
+        Status.Text = "Invalid Key! Try again."
+        Status.TextColor3 = Color3.fromRGB(255, 0, 0)
+    end
+end
+
+SubmitKey.MouseButton1Click:Connect(validateKeyAndLoad)
