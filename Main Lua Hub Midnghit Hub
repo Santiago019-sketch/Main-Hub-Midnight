@@ -1,5 +1,12 @@
--- Key System UI (as provided in your code)
+-- Prevent Duplicate UI
+if game.CoreGui:FindFirstChild("MidnightHubKeySystem") then
+    game.CoreGui.MidnightHubKeySystem:Destroy()
+end
+
+-- Key System UI
 local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "MidnightHubKeySystem"
+
 local Main = Instance.new("Frame")
 local Title = Instance.new("TextLabel")
 local KeyInput = Instance.new("TextBox")
@@ -68,7 +75,7 @@ Status.Text = ""
 Status.TextColor3 = Color3.fromRGB(255, 255, 255)
 Status.TextSize = 14.000
 
--- Add corners for UI elements
+-- Add Corners for UI
 local function AddCorner(inst)
     local corner = Instance.new("UICorner")
     corner.CornerRadius = UDim.new(0, 6)
