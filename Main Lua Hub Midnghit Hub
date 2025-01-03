@@ -1,7 +1,93 @@
 -- Key System UI (as provided in your code)
--- (Already implemented in your provided script)
+local ScreenGui = Instance.new("ScreenGui")
+local Main = Instance.new("Frame")
+local Title = Instance.new("TextLabel")
+local KeyInput = Instance.new("TextBox")
+local SubmitKey = Instance.new("TextButton")
+local GetKey = Instance.new("TextButton")
+local Status = Instance.new("TextLabel")
 
--- Hub Logic
+ScreenGui.Parent = game.CoreGui
+ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+Main.Name = "Main"
+Main.Parent = ScreenGui
+Main.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+Main.Position = UDim2.new(0.5, -150, 0.5, -100)
+Main.Size = UDim2.new(0, 300, 0, 200)
+Main.Active = true
+Main.Draggable = true
+
+Title.Name = "Title"
+Title.Parent = Main
+Title.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+Title.Size = UDim2.new(1, 0, 0, 50)
+Title.Font = Enum.Font.GothamBold
+Title.Text = "Midnight Hub"
+Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+Title.TextSize = 22.000
+
+KeyInput.Name = "KeyInput"
+KeyInput.Parent = Main
+KeyInput.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+KeyInput.Position = UDim2.new(0.5, -125, 0.3, 0)
+KeyInput.Size = UDim2.new(0, 250, 0, 30)
+KeyInput.Font = Enum.Font.Gotham
+KeyInput.PlaceholderText = "Enter Key..."
+KeyInput.Text = ""
+KeyInput.TextColor3 = Color3.fromRGB(255, 255, 255)
+KeyInput.TextSize = 14.000
+
+SubmitKey.Name = "SubmitKey"
+SubmitKey.Parent = Main
+SubmitKey.BackgroundColor3 = Color3.fromRGB(0, 120, 215)
+SubmitKey.Position = UDim2.new(0.5, -125, 0.5, 0)
+SubmitKey.Size = UDim2.new(0, 250, 0, 30)
+SubmitKey.Font = Enum.Font.GothamBold
+SubmitKey.Text = "Submit Key"
+SubmitKey.TextColor3 = Color3.fromRGB(255, 255, 255)
+SubmitKey.TextSize = 14.000
+
+GetKey.Name = "GetKey"
+GetKey.Parent = Main
+GetKey.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+GetKey.Position = UDim2.new(0.5, -125, 0.7, 0)
+GetKey.Size = UDim2.new(0, 250, 0, 30)
+GetKey.Font = Enum.Font.Gotham
+GetKey.Text = "Get Key"
+GetKey.TextColor3 = Color3.fromRGB(255, 255, 255)
+GetKey.TextSize = 14.000
+
+Status.Name = "Status"
+Status.Parent = Main
+Status.BackgroundTransparency = 1
+Status.Position = UDim2.new(0, 0, 0.85, 0)
+Status.Size = UDim2.new(1, 0, 0, 30)
+Status.Font = Enum.Font.Gotham
+Status.Text = ""
+Status.TextColor3 = Color3.fromRGB(255, 255, 255)
+Status.TextSize = 14.000
+
+-- Add corners for UI elements
+local function AddCorner(inst)
+    local corner = Instance.new("UICorner")
+    corner.CornerRadius = UDim.new(0, 6)
+    corner.Parent = inst
+end
+
+AddCorner(Main)
+AddCorner(KeyInput)
+AddCorner(SubmitKey)
+AddCorner(GetKey)
+
+-- Valid Keys
+local ValidKeys = {
+    "MidnightHub2024",
+    "PremiumUser123",
+    "TestKey456"
+}
+
+-- Game Scripts
 local gameScripts = {
     [9285238704] = "https://raw.githubusercontent.com/Santiago019-sketch/Race-Clicker-Midnight/refs/heads/main/Race%20clicker%20Midnight%20Hub",
     [5490351219] = "https://raw.githubusercontent.com/Santiago019-sketch/Clicker-Madneess-Midnight-Hub/refs/heads/main/Clicker%20Madness",
@@ -14,9 +100,11 @@ local gameScripts = {
     [10201206782] = "https://raw.githubusercontent.com/Santiago019-sketch/Sonic.exe/refs/heads/main/Midnight%20Hub%20Raise%20Sonic.exe"
 }
 
--- Function to load game-specific scripts
-local function loadGameScript(placeId)
+-- Load Game Script
+local function loadGameScript()
+    local placeId = game.PlaceId
     local scriptUrl = gameScripts[placeId]
+
     if scriptUrl then
         loadstring(game:HttpGet(scriptUrl))()
     else
@@ -24,29 +112,27 @@ local function loadGameScript(placeId)
     end
 end
 
--- Key validation
-local function validateKeyAndLoad()
-    -- Replace this logic with your existing key system (as shown in your provided code)
-    local key = KeyInput.Text
-    local isValidKey = false
+-- Submit Key Logic
+SubmitKey.MouseButton1Click:Connect(function()
+    local keyInput = KeyInput.Text
 
-    for _, validKey in ipairs(ValidKeys) do
-        if key == validKey then
-            isValidKey = true
-            break
-        end
-    end
-
-    if isValidKey then
+    if table.find(ValidKeys, keyInput) then
         Status.Text = "Correct Key! Loading script..."
         Status.TextColor3 = Color3.fromRGB(0, 255, 0)
         wait(1)
-        ScreenGui:Destroy() -- Remove key UI
-        loadGameScript(game.PlaceId) -- Load the script for the current game
+        ScreenGui:Destroy()
+        loadGameScript()
     else
         Status.Text = "Invalid Key! Try again."
         Status.TextColor3 = Color3.fromRGB(255, 0, 0)
     end
-end
+end)
 
-SubmitKey.MouseButton1Click:Connect(validateKeyAndLoad)
+-- Get Key Logic
+GetKey.MouseButton1Click:Connect(function()
+    setclipboard("https://discord.gg/yourdiscordhere") -- Replace with your Discord invite link
+    Status.Text = "Discord link copied!"
+    Status.TextColor3 = Color3.fromRGB(0, 255, 0)
+    wait(2)
+    Status.Text = ""
+end)
