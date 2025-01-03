@@ -1,6 +1,6 @@
 -- Prevent Duplicate UI
 if game.CoreGui:FindFirstChild("MidnightHubKeySystem") then
-    game.CoreGui.MidnightHubKeySystem:Destroy()
+    return warn("Key system already exists. Avoid creating duplicates!")
 end
 
 -- Key System UI
@@ -87,59 +87,67 @@ AddCorner(KeyInput)
 AddCorner(SubmitKey)
 AddCorner(GetKey)
 
--- Valid Keys
+-- Updated Keys
 local ValidKeys = {
-    "MidnightHub2024",
-    "PremiumUser123",
-    "TestKey456"
+    "MidnightHub2025",
+    "PremiumKey",
+    "SpecialAccess"
 }
 
--- Game Scripts
-local gameScripts = {
-    [9285238704] = "https://raw.githubusercontent.com/Santiago019-sketch/Race-Clicker-Midnight/refs/heads/main/Race%20clicker%20Midnight%20Hub",
-    [5490351219] = "https://raw.githubusercontent.com/Santiago019-sketch/Clicker-Madneess-Midnight-Hub/refs/heads/main/Clicker%20Madness",
-    [16784977282] = "https://raw.githubusercontent.com/Santiago019-sketch/Super-Sayian-Simulator-2-midnight/refs/heads/main/Midnight%20super%20sayian%20sim%202",
-    [16572004551] = "https://raw.githubusercontent.com/Santiago019-sketch/MidnightV5/refs/heads/main/Main.lua",
-    [3623096087] = "https://raw.githubusercontent.com/Santiago019-sketch/Midnight/refs/heads/main/Muscle%20Legends%20%7C%20Midnigt%20Hub",
-    [3101667897] = "https://raw.githubusercontent.com/Santiago019-sketch/Legend-Of-Speed/refs/heads/main/Midnight%20Hub",
-    [6677985923] = "https://raw.githubusercontent.com/Santiago019-sketch/Bloxfruitscript/refs/heads/main/Millionare%20Empire%20Tycoon",
-    [574407221] = "https://raw.githubusercontent.com/Santiago019-sketch/Super-Hero-Tycoon/refs/heads/main/Main.lua",
-    [10201206782] = "https://raw.githubusercontent.com/Santiago019-sketch/Sonic.exe/refs/heads/main/Midnight%20Hub%20Raise%20Sonic.exe"
-}
-
--- Load Game Script
-local function loadGameScript()
-    local placeId = game.PlaceId
-    local scriptUrl = gameScripts[placeId]
-
-    if scriptUrl then
-        loadstring(game:HttpGet(scriptUrl))()
-    else
-        warn("No script available for this game (PlaceId: " .. placeId .. ")")
-    end
-end
-
--- Submit Key Logic
-SubmitKey.MouseButton1Click:Connect(function()
-    local keyInput = KeyInput.Text
-
-    if table.find(ValidKeys, keyInput) then
-        Status.Text = "Correct Key! Loading script..."
-        Status.TextColor3 = Color3.fromRGB(0, 255, 0)
-        wait(1)
-        ScreenGui:Destroy()
-        loadGameScript()
-    else
-        Status.Text = "Invalid Key! Try again."
-        Status.TextColor3 = Color3.fromRGB(255, 0, 0)
-    end
-end)
-
--- Get Key Logic
+-- Get Key Button Functionality
 GetKey.MouseButton1Click:Connect(function()
-    setclipboard("https://discord.gg/yourdiscordhere") -- Replace with your Discord invite link
+    setclipboard("https://discord.gg/yourdiscordhere") -- Replace with your Discord link
     Status.Text = "Discord link copied!"
     Status.TextColor3 = Color3.fromRGB(0, 255, 0)
     wait(2)
     Status.Text = ""
 end)
+
+-- Submit Key Button Functionality
+SubmitKey.MouseButton1Click:Connect(function()
+    local keyInput = KeyInput.Text
+
+    -- Validate Key
+    local isValid = false
+    for _, validKey in pairs(ValidKeys) do
+        if keyInput == validKey then
+            isValid = true
+            break
+        end
+    end
+
+    if isValid then
+        Status.Text = "Correct Key!"
+        Status.TextColor3 = Color3.fromRGB(0, 255, 0)
+        wait(1)
+        ScreenGui:Destroy()
+        loadMainScript()
+    else
+        Status.Text = "Invalid Key!"
+        Status.TextColor3 = Color3.fromRGB(255, 0, 0)
+        wait(2)
+        Status.Text = ""
+    end
+end)
+
+-- Main Script Loader
+function loadMainScript()
+    local placeId = game.PlaceId
+    local scripts = {
+        [9285238704] = "https://raw.githubusercontent.com/Santiago019-sketch/Race-Clicker-Midnight/refs/heads/main/Race%20clicker%20Midnight%20Hub",
+        [5490351219] = "https://raw.githubusercontent.com/Santiago019-sketch/Clicker-Madneess-Midnight-Hub/refs/heads/main/Clicker%20Madness",
+        [16784977282] = "https://raw.githubusercontent.com/Santiago019-sketch/Super-Sayian-Simulator-2-midnight/refs/heads/main/Midnight%20super%20sayian%20sim%202",
+        [16572004551] = "https://raw.githubusercontent.com/Santiago019-sketch/MidnightV5/refs/heads/main/Main.lua",
+        [3623096087] = "https://raw.githubusercontent.com/Santiago019-sketch/Midnight/refs/heads/main/Muscle%20Legends%20%7C%20Midnigt%20Hub",
+        [3101667897] = "https://raw.githubusercontent.com/Santiago019-sketch/Legend-Of-Speed/refs/heads/main/Midnight%20Hub",
+        [6677985923] = "https://raw.githubusercontent.com/Santiago019-sketch/Bloxfruitscript/refs/heads/main/Millionare%20Empire%20Tycoon",
+        [574407221] = "https://raw.githubusercontent.com/Santiago019-sketch/Super-Hero-Tycoon/refs/heads/main/Main.lua",
+        [10201206782] = "https://raw.githubusercontent.com/Santiago019-sketch/Sonic.exe/refs/heads/main/Midnight%20Hub%20Raise%20Sonic.exe"
+    }
+
+    if scripts[placeId] then
+        loadstring(game:HttpGet(scripts[placeId]))()
+    else
+        warn("No script available for this game.")
+    end
+end
