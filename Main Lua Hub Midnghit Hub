@@ -1,9 +1,3 @@
--- Prevent Duplicate UI or Instances
-if game.CoreGui:FindFirstChild("MidnightHubKeySystem") then
-    warn("Key system already exists!")
-    return
-end
-
 -- Key System Setup
 local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.Name = "MidnightHubKeySystem"
@@ -11,19 +5,22 @@ ScreenGui.Parent = game.CoreGui
 
 local Main = Instance.new("Frame")
 local Title = Instance.new("TextLabel")
+local CreatorInfo = Instance.new("TextLabel")
 local KeyInput = Instance.new("TextBox")
 local SubmitKey = Instance.new("TextButton")
 local GetKey = Instance.new("TextButton")
 local Status = Instance.new("TextLabel")
 
+-- Main Frame
 Main.Name = "Main"
 Main.Parent = ScreenGui
 Main.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
 Main.Position = UDim2.new(0.5, -150, 0.5, -100)
-Main.Size = UDim2.new(0, 300, 0, 200)
+Main.Size = UDim2.new(0, 300, 0, 230)
 Main.Active = true
 Main.Draggable = true
 
+-- Title
 Title.Name = "Title"
 Title.Parent = Main
 Title.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
@@ -33,10 +30,22 @@ Title.Text = "Midnight Hub Key System"
 Title.TextColor3 = Color3.fromRGB(255, 255, 255)
 Title.TextSize = 22.000
 
+-- Creator Info
+CreatorInfo.Name = "CreatorInfo"
+CreatorInfo.Parent = Main
+CreatorInfo.BackgroundTransparency = 1
+CreatorInfo.Position = UDim2.new(0, 0, 1, -40)
+CreatorInfo.Size = UDim2.new(1, 0, 0, 20)
+CreatorInfo.Font = Enum.Font.Gotham
+CreatorInfo.Text = "Made by Midnight Hub Owner Mikee_Str UK"
+CreatorInfo.TextColor3 = Color3.fromRGB(255, 255, 255)
+CreatorInfo.TextSize = 14.000
+
+-- Key Input
 KeyInput.Name = "KeyInput"
 KeyInput.Parent = Main
 KeyInput.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-KeyInput.Position = UDim2.new(0.5, -125, 0.4, 0)
+KeyInput.Position = UDim2.new(0.5, -125, 0.35, 0)
 KeyInput.Size = UDim2.new(0, 250, 0, 30)
 KeyInput.Font = Enum.Font.Gotham
 KeyInput.PlaceholderText = "Enter Key..."
@@ -44,26 +53,29 @@ KeyInput.Text = ""
 KeyInput.TextColor3 = Color3.fromRGB(255, 255, 255)
 KeyInput.TextSize = 14.000
 
+-- Submit Key Button
 SubmitKey.Name = "SubmitKey"
 SubmitKey.Parent = Main
 SubmitKey.BackgroundColor3 = Color3.fromRGB(0, 120, 215)
-SubmitKey.Position = UDim2.new(0.5, -125, 0.6, 0)
+SubmitKey.Position = UDim2.new(0.5, -125, 0.5, 0)
 SubmitKey.Size = UDim2.new(0, 250, 0, 30)
 SubmitKey.Font = Enum.Font.GothamBold
 SubmitKey.Text = "Submit Key"
 SubmitKey.TextColor3 = Color3.fromRGB(255, 255, 255)
 SubmitKey.TextSize = 14.000
 
+-- Get Key Button
 GetKey.Name = "GetKey"
 GetKey.Parent = Main
 GetKey.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-GetKey.Position = UDim2.new(0.5, -125, 0.8, 0)
+GetKey.Position = UDim2.new(0.5, -125, 0.65, 0)
 GetKey.Size = UDim2.new(0, 250, 0, 30)
 GetKey.Font = Enum.Font.Gotham
 GetKey.Text = "Get Key"
 GetKey.TextColor3 = Color3.fromRGB(255, 255, 255)
 GetKey.TextSize = 14.000
 
+-- Status Label
 Status.Name = "Status"
 Status.Parent = Main
 Status.BackgroundTransparency = 1
