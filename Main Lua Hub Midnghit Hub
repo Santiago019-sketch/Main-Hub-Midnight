@@ -1,11 +1,13 @@
--- Prevent Duplicate UI
+-- Prevent Duplicate UI or Instances
 if game.CoreGui:FindFirstChild("MidnightHubKeySystem") then
-    return warn("Key system already exists. Avoid creating duplicates!")
+    warn("Key system already exists!")
+    return
 end
 
--- Key System UI
+-- Key System Setup
 local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.Name = "MidnightHubKeySystem"
+ScreenGui.Parent = game.CoreGui
 
 local Main = Instance.new("Frame")
 local Title = Instance.new("TextLabel")
@@ -13,9 +15,6 @@ local KeyInput = Instance.new("TextBox")
 local SubmitKey = Instance.new("TextButton")
 local GetKey = Instance.new("TextButton")
 local Status = Instance.new("TextLabel")
-
-ScreenGui.Parent = game.CoreGui
-ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
 Main.Name = "Main"
 Main.Parent = ScreenGui
@@ -27,17 +26,17 @@ Main.Draggable = true
 
 Title.Name = "Title"
 Title.Parent = Main
-Title.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+Title.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
 Title.Size = UDim2.new(1, 0, 0, 50)
 Title.Font = Enum.Font.GothamBold
-Title.Text = "Midnight Hub"
+Title.Text = "Midnight Hub Key System"
 Title.TextColor3 = Color3.fromRGB(255, 255, 255)
 Title.TextSize = 22.000
 
 KeyInput.Name = "KeyInput"
 KeyInput.Parent = Main
-KeyInput.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
-KeyInput.Position = UDim2.new(0.5, -125, 0.3, 0)
+KeyInput.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+KeyInput.Position = UDim2.new(0.5, -125, 0.4, 0)
 KeyInput.Size = UDim2.new(0, 250, 0, 30)
 KeyInput.Font = Enum.Font.Gotham
 KeyInput.PlaceholderText = "Enter Key..."
@@ -48,7 +47,7 @@ KeyInput.TextSize = 14.000
 SubmitKey.Name = "SubmitKey"
 SubmitKey.Parent = Main
 SubmitKey.BackgroundColor3 = Color3.fromRGB(0, 120, 215)
-SubmitKey.Position = UDim2.new(0.5, -125, 0.5, 0)
+SubmitKey.Position = UDim2.new(0.5, -125, 0.6, 0)
 SubmitKey.Size = UDim2.new(0, 250, 0, 30)
 SubmitKey.Font = Enum.Font.GothamBold
 SubmitKey.Text = "Submit Key"
@@ -57,8 +56,8 @@ SubmitKey.TextSize = 14.000
 
 GetKey.Name = "GetKey"
 GetKey.Parent = Main
-GetKey.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
-GetKey.Position = UDim2.new(0.5, -125, 0.7, 0)
+GetKey.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+GetKey.Position = UDim2.new(0.5, -125, 0.8, 0)
 GetKey.Size = UDim2.new(0, 250, 0, 30)
 GetKey.Font = Enum.Font.Gotham
 GetKey.Text = "Get Key"
@@ -68,33 +67,20 @@ GetKey.TextSize = 14.000
 Status.Name = "Status"
 Status.Parent = Main
 Status.BackgroundTransparency = 1
-Status.Position = UDim2.new(0, 0, 0.85, 0)
-Status.Size = UDim2.new(1, 0, 0, 30)
+Status.Position = UDim2.new(0, 0, 1, -20)
+Status.Size = UDim2.new(1, 0, 0, 20)
 Status.Font = Enum.Font.Gotham
 Status.Text = ""
 Status.TextColor3 = Color3.fromRGB(255, 255, 255)
 Status.TextSize = 14.000
 
--- Add Corners for UI
-local function AddCorner(inst)
-    local corner = Instance.new("UICorner")
-    corner.CornerRadius = UDim.new(0, 6)
-    corner.Parent = inst
-end
-
-AddCorner(Main)
-AddCorner(KeyInput)
-AddCorner(SubmitKey)
-AddCorner(GetKey)
-
--- Updated Keys
+-- Valid Keys
 local ValidKeys = {
     "MidnightHub2025",
-    "PremiumKey",
-    "SpecialAccess"
+    "PremiumKey"
 }
 
--- Get Key Button Functionality
+-- Get Key Functionality
 GetKey.MouseButton1Click:Connect(function()
     setclipboard("https://discord.gg/yourdiscordhere") -- Replace with your Discord link
     Status.Text = "Discord link copied!"
@@ -103,21 +89,12 @@ GetKey.MouseButton1Click:Connect(function()
     Status.Text = ""
 end)
 
--- Submit Key Button Functionality
+-- Submit Key Functionality
 SubmitKey.MouseButton1Click:Connect(function()
-    local keyInput = KeyInput.Text
+    local inputKey = KeyInput.Text
 
-    -- Validate Key
-    local isValid = false
-    for _, validKey in pairs(ValidKeys) do
-        if keyInput == validKey then
-            isValid = true
-            break
-        end
-    end
-
-    if isValid then
-        Status.Text = "Correct Key!"
+    if table.find(ValidKeys, inputKey) then
+        Status.Text = "Key Accepted!"
         Status.TextColor3 = Color3.fromRGB(0, 255, 0)
         wait(1)
         ScreenGui:Destroy()
@@ -132,12 +109,7 @@ end)
 
 -- Main Script Loader
 function loadMainScript()
-    if game.CoreGui:FindFirstChild("MidnightHubKeySystem") then
-        warn("Already loaded main script.")
-        return
-    end
-
-    local placeId = game.PlaceId
+    local PlaceId = game.PlaceId
     local scripts = {
         [9285238704] = "https://raw.githubusercontent.com/Santiago019-sketch/Race-Clicker-Midnight/refs/heads/main/Race%20clicker%20Midnight%20Hub",
         [5490351219] = "https://raw.githubusercontent.com/Santiago019-sketch/Clicker-Madneess-Midnight-Hub/refs/heads/main/Clicker%20Madness",
@@ -150,8 +122,8 @@ function loadMainScript()
         [10201206782] = "https://raw.githubusercontent.com/Santiago019-sketch/Sonic.exe/refs/heads/main/Midnight%20Hub%20Raise%20Sonic.exe"
     }
 
-    if scripts[placeId] then
-        loadstring(game:HttpGet(scripts[placeId]))()
+    if scripts[PlaceId] then
+        loadstring(game:HttpGet(scripts[PlaceId]))()
     else
         warn("No script available for this game.")
     end
